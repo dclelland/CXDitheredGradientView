@@ -32,7 +32,7 @@
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGGradientRef gradient = [self gradientWithColors:self.colors];
+    CGGradientRef gradient = [self gradientWithColors:self.colors ?: @[[UIColor clearColor], [UIColor clearColor]]];
     
     [self drawGradient:gradient inContext:context inRect:rect];
     
@@ -52,7 +52,7 @@
 - (CGGradientRef)gradientWithColors:(NSArray *)colors
 {
     CGColorSpaceRef gradientColorSpace = CGColorSpaceCreateDeviceRGB();
-    CFArrayRef gradientColors = (__bridge CFArrayRef)([self.colors map:^id(UIColor *color) {
+    CFArrayRef gradientColors = (__bridge CFArrayRef)([colors map:^id(UIColor *color) {
         return (id)color.CGColor;
     }]);
     
