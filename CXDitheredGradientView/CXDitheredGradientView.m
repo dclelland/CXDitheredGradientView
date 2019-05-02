@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Daniel Clelland. All rights reserved.
 //
 
-#import <ObjectiveSugar/ObjectiveSugar.h>
-
 #import "CXDitheredGradientView.h"
 
 @interface CXDitheredGradientView ()
@@ -51,12 +49,13 @@
 
 - (CGGradientRef)gradientWithColors:(NSArray *)colors
 {
-    CGColorSpaceRef gradientColorSpace = CGColorSpaceCreateDeviceRGB();
-    CFArrayRef gradientColors = (__bridge CFArrayRef)([colors map:^id(UIColor *color) {
-        return (id)color.CGColor;
-    }]);
+    NSMutableArray *gradientColors = [[NSMutableArray alloc] init];
     
-    return CGGradientCreateWithColors(gradientColorSpace, gradientColors, NULL);
+    for (UIColor *color in colors) {
+        [gradientColors addObject:(id)color.CGColor];
+    }
+    
+    return CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), (CFArrayRef)gradientColors, NULL);
 }
 
 @end
